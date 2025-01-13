@@ -20,13 +20,18 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Client {
     
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
     @Column(name = "name")
     private String clientName;
-
+    
     private String phone;
-
+    
+    public Client(ClientDto data) {
+        this.clientName = data.clientName();
+        this.phone = data.phone();
+        }
 }
