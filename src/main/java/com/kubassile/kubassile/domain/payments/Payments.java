@@ -38,7 +38,7 @@ public class Payments {
 
     private Double value;
 
-    @Column(name = "method_id")
+    @Column(name = "method")
     private Method paymentMethod;
     
 }

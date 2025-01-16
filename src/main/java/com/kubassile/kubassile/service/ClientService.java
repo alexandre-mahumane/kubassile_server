@@ -19,24 +19,16 @@ public class ClientService {
         return this.clientRepository.findAll();
     }
 
-
     public Client insert(ClientDto data){
-        System.out.println(data);
-        var checkClient = this.clientRepository
-            .findByClientName(data.clientName());
-            
-        if (checkClient.isPresent()) {
-            throw new RuntimeException("User ");
+        Client checkClient = this.clientRepository
+            .findByClientNameAndPhoneIgnoreCase(data.clientName(), data.phone());
+        if (checkClient != null) {
+            return checkClient;
         }
-        var checkPhone = this.clientRepository
-            .findByPhone(data.phone());
             
-        if (checkPhone.isPresent()) {
-            throw new RuntimeException("User ");
-        }
 
         Client client = new Client(data);
-        
+
         return this.clientRepository.save(client);
         }
 

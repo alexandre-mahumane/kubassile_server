@@ -2,7 +2,6 @@ package com.kubassile.kubassile.domain.user;
 
 import com.kubassile.kubassile.domain.user.enums.Roles;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,6 +28,5 @@ public class Users {
 
     private String password;
 
-    @Column(name = "role_id")
     private Roles role;
 }

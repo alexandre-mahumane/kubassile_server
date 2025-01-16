@@ -1,6 +1,0 @@
-CREATE TABLE roles(
-    id INTEGER AUTO_INCREMENT PRIMARY KEY,
-    role VARCHAR(15)
-);
-
-INSERT INTO roles (role) VALUES ("EMPLOYEE"), ("ADMIN")

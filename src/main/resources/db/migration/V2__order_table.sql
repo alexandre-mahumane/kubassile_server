@@ -8,6 +8,5 @@ CREATE TABLE orders(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (client_id) REFERENCES client(id),
-    FOREIGN KEY (order_status_id) REFERENCES order_status(id)
+    FOREIGN KEY (client_id) REFERENCES client(id)
 )

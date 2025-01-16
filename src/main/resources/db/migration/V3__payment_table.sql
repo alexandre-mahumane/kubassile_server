@@ -1,14 +1,12 @@
 CREATE TABLE payments(
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     order_id BIGINT NOT NULL,
-    payment_status_id BIGINT NOT NULL,
+    payment_status_id VARCHAR(15) NOT NULL,
     value DECIMAL(10,2) NOT NULL,
-    method_id BIGINT NOT NULL,
+    method VARCHAR(15) NOT NULL,
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (order_id) REFERENCES orders(id),
-    FOREIGN KEY (payment_status_id) REFERENCES payment_status(id),
-    FOREIGN KEY (method_id) REFERENCES payment_method(id)
+    FOREIGN KEY (order_id) REFERENCES orders(id)
 )
