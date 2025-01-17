@@ -10,5 +10,5 @@ import com.kubassile.kubassile.domain.order.Order;
 public interface OdersRepository extends JpaRepository<Order, Long> {
 
     List<Order> findByClientId(Client client);
-    
+
 }

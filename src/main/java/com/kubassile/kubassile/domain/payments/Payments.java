@@ -1,8 +1,9 @@
 package com.kubassile.kubassile.domain.payments;
 
 import com.kubassile.kubassile.domain.order.Order;
-import com.kubassile.kubassile.domain.order.enums.Status;
-import com.kubassile.kubassile.domain.payments.enums.Method;
+import com.kubassile.kubassile.domain.payments.dtos.PaymentStatusDto;
+import com.kubassile.kubassile.domain.payments.enums.PaymentMethod;
+import com.kubassile.kubassile.domain.payments.enums.PaymentStatus;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -13,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,17 +30,45 @@ public class Payments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
- 
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id", referencedColumnName = "id")
     private Order order;
 
     @Column(name = "payment_status_id")
-    private Status paymentStatus;
+    private Long paymentStatusId;
 
     private Double value;
 
-    @Column(name = "method")
-    private Method paymentMethod;
-    
+    @Column(name = "method_id")
+    private Long paymentMethodId;
+
+    @Transient
+    private PaymentStatusDto paymentStatus;
+
+    @Transient
+    private PaymentStatusDto paymentMethod;
+
+    public void setPaymentStatusId(Long paymentStatusId) {
+        this.paymentStatusId = paymentStatusId;
+        this.paymentStatus = PaymentStatus.fromId(paymentStatusId);
+
+    }
+
+    public void setPaymentStatus(PaymentStatusDto paymentStatus) {
+        this.paymentStatus = paymentStatus;
+        this.paymentStatusId = paymentStatus.id();
+    }
+
+    public void setPaymentMethodId(Long paymentMethodId) {
+        this.paymentMethodId = paymentMethodId;
+        this.paymentMethod = PaymentMethod.fromId(paymentMethodId);
+
+    }
+
+    public void setpaymentMethod(PaymentStatusDto paymentMethod) {
+        this.paymentMethod = paymentMethod;
+        this.paymentMethodId = paymentMethod.id();
+    }
+
 }
