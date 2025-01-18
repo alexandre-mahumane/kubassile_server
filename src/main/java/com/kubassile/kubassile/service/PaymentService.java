@@ -9,7 +9,7 @@ import com.kubassile.kubassile.domain.order.dtos.OrderDataResponseDto;
 import com.kubassile.kubassile.domain.payments.Payments;
 import com.kubassile.kubassile.domain.payments.dtos.PaymentDto;
 import com.kubassile.kubassile.domain.payments.dtos.PaymentResponseDto;
-import com.kubassile.kubassile.repository.OdersRepository;
+import com.kubassile.kubassile.repository.OrdersRepository;
 import com.kubassile.kubassile.repository.PaymentRepository;
 
 import lombok.AllArgsConstructor;
@@ -19,7 +19,7 @@ import lombok.AllArgsConstructor;
 public class PaymentService {
 
         private final PaymentRepository paymentRepository;
-        private final OdersRepository odersRepository;
+        private final OrdersRepository odersRepository;
 
         public List<OrderDataResponseDto> getAll() {
                 var data = paymentRepository.findAll();

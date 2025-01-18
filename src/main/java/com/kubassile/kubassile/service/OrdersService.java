@@ -1,5 +1,6 @@
 package com.kubassile.kubassile.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,7 +16,7 @@ import com.kubassile.kubassile.domain.order.enums.Status;
 import com.kubassile.kubassile.domain.payments.Payments;
 import com.kubassile.kubassile.domain.payments.dtos.PaymentDto;
 import com.kubassile.kubassile.repository.ClientRepository;
-import com.kubassile.kubassile.repository.OdersRepository;
+import com.kubassile.kubassile.repository.OrdersRepository;
 import com.kubassile.kubassile.repository.PaymentRepository;
 
 import lombok.AllArgsConstructor;
@@ -24,13 +25,29 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class OrdersService {
 
-    private final OdersRepository odersRepository;
+    private final OrdersRepository odersRepository;
     private final ClientService clientService;
     private final ClientRepository clientRepository;
     private final PaymentService paymentService;
     private final PaymentRepository paymentRepository;
 
-    public List<OrderDataResponseDto> getAll() {
+    public List<OrderDataResponseDto> getAll(
+            LocalDateTime startDate,
+            LocalDateTime endDate) {
+        if (startDate != null && endDate != null) {
+            List<Order> orders = this.odersRepository.findAll(
+                    startDate.withHour(0).withMinute(0).withSecond(0),
+                    endDate.withHour(23).withMinute(59).withSecond(59));
+            List<Payments> list = this.paymentRepository.findByOrderIn(orders);
+
+            return list.stream()
+                    .map(data -> new OrderDataResponseDto(
+                            data.getOrder(),
+                            data.getValue(),
+                            data.getPaymentMethodId(),
+                            data.getPaymentStatusId()))
+                    .collect(Collectors.toList());
+        }
         return this.paymentService.getAll();
     }
 

@@ -1,6 +1,7 @@
 package com.kubassile.kubassile.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kubassile.kubassile.domain.order.dtos.OrderDto;
@@ -10,8 +11,10 @@ import com.kubassile.kubassile.service.OrdersService;
 
 import lombok.AllArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,8 +31,11 @@ public class OrderController {
     private final OrdersService odersService;
 
     @GetMapping("/")
-    public ResponseEntity<List<OrderDataResponseDto>> getAll() {
-        return ResponseEntity.ok(this.odersService.getAll());
+    public ResponseEntity<List<OrderDataResponseDto>> getAll(
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startDate,
+
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDate) {
+        return ResponseEntity.ok(this.odersService.getAll(startDate, endDate));
     }
 
     @GetMapping("/{id}")
