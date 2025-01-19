@@ -11,10 +11,10 @@ public enum Roles {
 
     private final Integer id;
 
-    public static Roles fromId(Integer id){
-        for(Roles roles: Roles.values()){
+    public static String fromId(Integer id) {
+        for (Roles roles : Roles.values()) {
             if (roles.id == id) {
-                return roles;
+                return roles.name();
             }
         }
 
