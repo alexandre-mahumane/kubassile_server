@@ -5,7 +5,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kubassile.kubassile.domain.client.Client;
-import com.kubassile.kubassile.domain.client.ClientDto;
+import com.kubassile.kubassile.domain.client.dto.ClientDto;
+import com.kubassile.kubassile.domain.client.dto.ClientResponseDto;
 import com.kubassile.kubassile.service.ClientService;
 
 import lombok.AllArgsConstructor;
@@ -30,7 +31,7 @@ public class ClientController {
     private final ClientService clientService;
 
     @GetMapping("/")
-    public ResponseEntity<List<Client>> getClientsRegistration(
+    public ResponseEntity<List<ClientResponseDto>> getClientsRegistration(
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startDate,
 
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endDate) {

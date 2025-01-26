@@ -1,12 +1,15 @@
 package com.kubassile.kubassile.service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.kubassile.kubassile.domain.client.Client;
-import com.kubassile.kubassile.domain.client.ClientDto;
+import com.kubassile.kubassile.domain.client.dto.ClientDto;
+import com.kubassile.kubassile.domain.client.dto.ClientResponseDto;
 import com.kubassile.kubassile.repository.ClientRepository;
 
 import lombok.AllArgsConstructor;
@@ -15,16 +18,25 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ClientService {
     private final ClientRepository clientRepository;
+    private final DateTimeFormatter dateTimeFormatter;
 
-    public List<Client> getAll(
+    public List<ClientResponseDto> getAll(
             LocalDateTime startDate,
             LocalDateTime endDate) {
         if ((startDate != null && endDate != null)) {
-            return this.clientRepository.findAll(
+            List<Client> clients = this.clientRepository.findAll(
                     startDate.withHour(0).withMinute(0).withSecond(0),
                     endDate.withHour(23).withMinute(59).withSecond(59));
+
+            return clients.stream()
+                    .map(data -> new ClientResponseDto(data.getId(), data.getClientName(), data.getPhone(),
+                            data.getCreatedAt().format(dateTimeFormatter)))
+                    .collect(Collectors.toList());
         }
-        return this.clientRepository.findAll();
+        List<Client> clients = this.clientRepository.findAll();
+
+        return clients.stream().map(data -> new ClientResponseDto(data.getId(), data.getClientName(), data.getPhone(),
+                data.getCreatedAt().format(dateTimeFormatter))).collect(Collectors.toList());
     }
 
     public Client insert(ClientDto data) {

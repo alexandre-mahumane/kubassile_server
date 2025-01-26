@@ -4,6 +4,7 @@ import com.kubassile.kubassile.domain.user.Users;
 
 import java.time.Instant;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
@@ -12,7 +13,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 @Service
 public class JWTService {
 
-    String secret = "fninieoee";
+    @Value("${jwt.secret.api}")
+    private String secret;
 
     Instant now = Instant.now();
 

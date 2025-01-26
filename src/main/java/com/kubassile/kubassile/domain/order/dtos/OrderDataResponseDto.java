@@ -6,7 +6,9 @@ public record OrderDataResponseDto(
                 Order order,
                 Double value,
                 Long paymentStatusId,
-                Long paymentMethodId
+                Long paymentMethodId,
+                String created_at,
+                String updated_at
 
 ) {
 

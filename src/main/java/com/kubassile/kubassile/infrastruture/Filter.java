@@ -29,7 +29,7 @@ public class Filter extends OncePerRequestFilter {
         String token = request.getHeader("Authorization");
 
         if (token != null) {
-            String subject = jwtService.decodeToken(token.replace("Bearer", ""));
+            String subject = jwtService.decodeToken(token.replace("Bearer ", ""));
             var user = usersRepository.findByName(subject);
 
             var authentication = new UsernamePasswordAuthenticationToken(user, null,

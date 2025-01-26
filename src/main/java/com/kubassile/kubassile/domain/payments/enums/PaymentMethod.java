@@ -14,7 +14,7 @@ import lombok.Getter;
 public enum PaymentMethod {
     MONEY(1L, "Dinheiro"),
     CARD(2L, "Cartao"),
-    TRANSFER(3L, "Transferencis");
+    TRANSFER(3L, "Transferencia");
 
     private final Long id;
     private final String label;

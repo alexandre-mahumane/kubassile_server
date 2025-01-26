@@ -5,10 +5,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kubassile.kubassile.domain.user.UserDto;
 import com.kubassile.kubassile.domain.user.Users;
+import com.kubassile.kubassile.service.AuthService;
 import com.kubassile.kubassile.service.JWTService;
 
 import lombok.AllArgsConstructor;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,27 +24,18 @@ public class Auth {
 
     private final JWTService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final AuthService authService;
 
     @PostMapping("/register")
-    public String insert(@RequestBody UserDto data) {
+    public ResponseEntity<String> insert(@RequestBody UserDto data) {
 
-        return "entity";
+        return new ResponseEntity<>(this.authService.signin(data), HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody UserDto data) {
-        var userPassword = new UsernamePasswordAuthenticationToken(
-                data.username(), data.password());
 
-        System.out.println("user password " + userPassword);
-        var authentication = this.authenticationManager.authenticate(userPassword);
-
-        var token = (Users) authentication.getPrincipal();
-
-        System.out.println("Enter in jwt service");
-        String val = this.jwtService.generateToken(token);
-
-        return ResponseEntity.ok("token");
+        return ResponseEntity.ok(this.authService.login(data));
     }
 
 }

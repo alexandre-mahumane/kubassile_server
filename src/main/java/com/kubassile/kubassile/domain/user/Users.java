@@ -7,6 +7,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.kubassile.kubassile.domain.user.enums.Roles;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,10 +38,14 @@ public class Users implements UserDetails {
     @Column(name = "password")
     private String pass;
 
-    private String role;
+    private Roles role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+
+        if (this.role == Roles.ADMIN) {
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        }
 
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }

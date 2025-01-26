@@ -1,5 +1,6 @@
 package com.kubassile.kubassile.service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +21,7 @@ public class PaymentService {
 
         private final PaymentRepository paymentRepository;
         private final OrdersRepository odersRepository;
+        private final DateTimeFormatter dateTimeFormatter;
 
         public List<OrderDataResponseDto> getAll() {
                 var data = paymentRepository.findAll();
@@ -29,7 +31,9 @@ public class PaymentService {
                                                 payment.getOrder(),
                                                 payment.getValue(),
                                                 payment.getPaymentStatusId(),
-                                                payment.getPaymentMethodId()))
+                                                payment.getPaymentMethodId(),
+                                                payment.getCreatedAt().format(dateTimeFormatter),
+                                                payment.getUpdatedAt().format(dateTimeFormatter)))
                                 .collect(Collectors.toList());
                 return dto;
         }

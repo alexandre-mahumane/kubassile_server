@@ -6,18 +6,9 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum Roles {
-    EMPLOYEE(1),
-    ADMIN(2);
+    EMPLOYEE("employee"),
+    ADMIN("admin");
 
-    private final Integer id;
+    private final String role;
 
-    public static String fromId(Integer id) {
-        for (Roles roles : Roles.values()) {
-            if (roles.id == id) {
-                return roles.name();
-            }
-        }
-
-        throw new IllegalArgumentException("Invalid Id");
-    }
 }

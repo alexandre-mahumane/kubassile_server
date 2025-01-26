@@ -1,5 +1,9 @@
 package com.kubassile.kubassile.domain.payments;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CurrentTimestamp;
+
 import com.kubassile.kubassile.domain.order.Order;
 import com.kubassile.kubassile.domain.payments.dtos.PaymentStatusDto;
 import com.kubassile.kubassile.domain.payments.enums.PaymentMethod;
@@ -43,6 +47,13 @@ public class Payments {
     @Column(name = "method_id")
     private Long paymentMethodId;
 
+    @Column(name = "created_at")
+    @CurrentTimestamp
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    @CurrentTimestamp
+    private LocalDateTime updatedAt;
     @Transient
     private PaymentStatusDto paymentStatus;
 
