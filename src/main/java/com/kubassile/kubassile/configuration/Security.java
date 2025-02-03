@@ -38,10 +38,10 @@ public class Security {
                                 .authorizeHttpRequests(authorize -> authorize
                                                 .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                                                .requestMatchers(HttpMethod.POST, "/api/auth/register")
-                                                .hasRole("ADMIN")
-                                                .requestMatchers(HttpMethod.DELETE, "/api/client/").hasRole("ADMIN")
-                                                .anyRequest().authenticated()
+                                                .requestMatchers(HttpMethod.POST, "/api/**").permitAll()
+                                                .requestMatchers(HttpMethod.PUT, "/api/**").permitAll()
+                                                .requestMatchers(HttpMethod.GET, "/api/**").permitAll().anyRequest()
+                                                .authenticated()
 
                                 )
 

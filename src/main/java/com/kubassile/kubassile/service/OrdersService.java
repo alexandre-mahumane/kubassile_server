@@ -16,6 +16,7 @@ import com.kubassile.kubassile.domain.order.dtos.OrderDataResponseDto;
 import com.kubassile.kubassile.domain.order.enums.Status;
 import com.kubassile.kubassile.domain.payments.Payments;
 import com.kubassile.kubassile.domain.payments.dtos.PaymentDto;
+import com.kubassile.kubassile.exceptions.NotFoundException;
 import com.kubassile.kubassile.repository.ClientRepository;
 import com.kubassile.kubassile.repository.OrdersRepository;
 import com.kubassile.kubassile.repository.PaymentRepository;
@@ -59,7 +60,7 @@ public class OrdersService {
 
                 Client client = this.clientRepository
                                 .findById(clientId)
-                                .orElseThrow(() -> new RuntimeException("Client not found"));
+                                .orElseThrow(() -> new NotFoundException("Client not found"));
                 List<Order> order = this.odersRepository.findByClientId(client);
 
                 List<Payments> payment = this.paymentRepository.findByOrderIn(order);
@@ -101,7 +102,7 @@ public class OrdersService {
                 Order order = this.odersRepository
                                 .findById(orderId)
                                 .orElseThrow(
-                                                () -> new RuntimeException(""));
+                                                () -> new NotFoundException("Order not found"));
 
                 ClientDto clientDto = new ClientDto(data.clientName(), data.phone());
                 this.clientService.update(order.getClientId().getId(), clientDto);
@@ -130,7 +131,7 @@ public class OrdersService {
                 Order order = this.odersRepository
                                 .findById(id)
                                 .orElseThrow(
-                                                () -> new RuntimeException(""));
+                                                () -> new NotFoundException("Order not found"));
 
                 this.paymentService.delete(order.getId());
                 this.odersRepository.delete(order);

@@ -10,6 +10,7 @@ import com.kubassile.kubassile.domain.order.dtos.OrderDataResponseDto;
 import com.kubassile.kubassile.domain.payments.Payments;
 import com.kubassile.kubassile.domain.payments.dtos.PaymentDto;
 import com.kubassile.kubassile.domain.payments.dtos.PaymentResponseDto;
+import com.kubassile.kubassile.exceptions.NotFoundException;
 import com.kubassile.kubassile.repository.OrdersRepository;
 import com.kubassile.kubassile.repository.PaymentRepository;
 
@@ -54,7 +55,7 @@ public class PaymentService {
         public PaymentResponseDto insert(PaymentDto data) {
 
                 this.odersRepository.findById(data.order().getId())
-                                .orElseThrow(() -> new RuntimeException("Order not found"));
+                                .orElseThrow(() -> new NotFoundException("Order not found"));
 
                 Payments payment = new Payments();
 

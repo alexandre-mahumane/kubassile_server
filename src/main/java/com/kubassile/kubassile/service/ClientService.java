@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.kubassile.kubassile.domain.client.Client;
 import com.kubassile.kubassile.domain.client.dto.ClientDto;
 import com.kubassile.kubassile.domain.client.dto.ClientResponseDto;
+import com.kubassile.kubassile.exceptions.NotFoundException;
 import com.kubassile.kubassile.repository.ClientRepository;
 
 import lombok.AllArgsConstructor;
@@ -55,7 +56,7 @@ public class ClientService {
         Client client = this.clientRepository
                 .findById(id)
                 .orElseThrow(
-                        () -> new RuntimeException("Client not found"));
+                        () -> new NotFoundException("Client not found"));
 
         if (!data.clientName().isEmpty())
             client.setClientName(data.clientName());
@@ -69,7 +70,7 @@ public class ClientService {
         Client client = this.clientRepository
                 .findById(id)
                 .orElseThrow(
-                        () -> new RuntimeException("Client not found"));
+                        () -> new NotFoundException("Client not found"));
         this.clientRepository.delete(client);
     }
 }
