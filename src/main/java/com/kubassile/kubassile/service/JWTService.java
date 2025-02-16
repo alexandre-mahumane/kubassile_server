@@ -1,6 +1,7 @@
 package com.kubassile.kubassile.service;
 
 import com.kubassile.kubassile.domain.user.Users;
+import com.kubassile.kubassile.exceptions.ForbiddenException;
 
 import java.time.Instant;
 
@@ -18,19 +19,36 @@ public class JWTService {
 
     Instant now = Instant.now();
 
+    private final long ACCESS_TOKEN_VALIDITY = 1000 * 60 * 15;
+    private final long REFRESH_TOKEN_VALIDITY = 1000 * 60 * 15;
+
     public String generateToken(Users data) {
         return JWT.create()
                 .withIssuer("kubassile-securtiy")
                 .withSubject(data.getUsername())
                 .withIssuedAt(now)
-                .withExpiresAt(now.plusSeconds(3600L))
+                .withExpiresAt(now.plusSeconds(ACCESS_TOKEN_VALIDITY))
+                .sign(Algorithm.HMAC256(secret));
+    }
+
+    public String generateRefreshToken(Users data) {
+        return JWT.create()
+                .withIssuer("kubassile-securtiy")
+                .withSubject(data.getUsername())
+                .withIssuedAt(now)
+                .withExpiresAt(now.plusSeconds(REFRESH_TOKEN_VALIDITY))
                 .sign(Algorithm.HMAC256(secret));
     }
 
     public String decodeToken(String token) {
-        return JWT.require(Algorithm.HMAC256(secret))
-                .withIssuer("kubassile-securtiy")
-                .build()
-                .verify(token).getSubject();
+        try {
+            return JWT.require(Algorithm.HMAC256(secret))
+                    .withIssuer("kubassile-securtiy")
+                    .build()
+                    .verify(token).getSubject();
+
+        } catch (Exception e) {
+            throw new ForbiddenException("Invalid or expired token");
+        }
     }
 }
