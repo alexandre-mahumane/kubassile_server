@@ -23,7 +23,7 @@ public class GlobalExceptionsHandler {
     }
 
     @ExceptionHandler(ForbiddenException.class)
-    public ResponseEntity<Object> handleUnauthorized(ForbiddenException ex) {
+    public ResponseEntity<Object> handleForbidden(ForbiddenException ex) {
         return ApiExceptionResponse.generateResponseException(HttpStatus.FORBIDDEN, ex.getMessage());
     }
 }

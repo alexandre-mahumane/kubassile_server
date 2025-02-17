@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 
 @Service
 public class JWTService {
@@ -47,7 +48,7 @@ public class JWTService {
                     .build()
                     .verify(token).getSubject();
 
-        } catch (Exception e) {
+        } catch (JWTVerificationException exception) {
             throw new ForbiddenException("Invalid or expired token");
         }
     }

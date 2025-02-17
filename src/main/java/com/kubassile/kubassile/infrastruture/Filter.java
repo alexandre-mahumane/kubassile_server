@@ -7,6 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.kubassile.kubassile.exceptions.ForbiddenException;
 import com.kubassile.kubassile.repository.UsersRepository;
 import com.kubassile.kubassile.service.JWTService;
 
@@ -29,16 +30,29 @@ public class Filter extends OncePerRequestFilter {
         String token = request.getHeader("Authorization");
 
         if (token != null) {
-            String subject = jwtService.decodeToken(token.replace("Bearer ", ""));
-            var user = usersRepository.findByName(subject);
+            try {
+                String subject = jwtService.decodeToken(token.replace("Bearer ", ""));
+                var user = usersRepository.findByName(subject);
 
-            var authentication = new UsernamePasswordAuthenticationToken(user, null,
-                    user.getAuthorities());
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } catch (ForbiddenException e) {
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                response.setContentType("application/json");
+                response.getWriter().write("""
+                            {
+                                "status": 403,
+                                "timestamp": "%s",
+                                "message": "%s",
+                                "error": "Forbidden"
+                            }
+                        """.formatted(java.time.LocalDateTime.now(), e.getMessage()));
+                return;
+            }
         }
 
         filterChain.doFilter(request, response);
+
     }
 
 }

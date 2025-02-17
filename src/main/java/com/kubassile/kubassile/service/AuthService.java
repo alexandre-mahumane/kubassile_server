@@ -63,6 +63,7 @@ public class AuthService {
     }
 
     public TokenResponseDto refreshToken(String token) {
+        token = "";
         if (token.isBlank())
             throw new ForbiddenException("Token is invalid!");
         String subject = this.jwtService.decodeToken(token);

@@ -53,9 +53,9 @@ public class Security {
                 UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
                 CorsConfiguration config = new CorsConfiguration();
                 config.setAllowCredentials(true);
-                config.addAllowedOrigin("http://localhost:5173"); // Origem permitida
-                config.addAllowedHeader("*"); // Permitir todos os headers
-                config.addAllowedMethod("*"); // Permitir todos os métodos (GET, POST, etc)
+                config.addAllowedOrigin("http://localhost:5173");
+                config.addAllowedHeader("*");
+                config.addAllowedMethod("*");
                 source.registerCorsConfiguration("/**", config);
                 return new CorsFilter(source);
         }

@@ -38,7 +38,7 @@ public class Auth {
     @PostMapping("/refresh-token")
     public ResponseEntity<TokenResponseDto> refreshToken(
             @CookieValue(value = "token", defaultValue = "") String token) {
-        System.out.println("tokennn: " + token);
+        System.out.println("tokennn hhhhhhhhhhhhhhhh: " + token);
         return ResponseEntity.ok(this.authService.refreshToken(token));
     }
 
