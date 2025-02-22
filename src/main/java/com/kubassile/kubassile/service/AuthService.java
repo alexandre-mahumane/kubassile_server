@@ -21,9 +21,9 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class AuthService {
-    private final UsersRepository usersRepository;
-    private final JWTService jwtService;
-    private final AuthenticationManager authenticationManager;
+    private  UsersRepository usersRepository;
+    private  JWTService jwtService;
+    private  AuthenticationManager authenticationManager;
 
     public TokenResponseDto signin(UserDto dto, HttpServletResponse response) {
         var checkUser = this.usersRepository.findByName(dto.username());

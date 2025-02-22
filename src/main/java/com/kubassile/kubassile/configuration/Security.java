@@ -37,6 +37,7 @@ public class Security {
                                 .csrf(csrf -> csrf.disable())
                                 .authorizeHttpRequests(authorize -> authorize
                                                 .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+                                                .requestMatchers(HttpMethod.GET, "/api/pdf/**").permitAll()
                                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest()
                                                 .authenticated()
 

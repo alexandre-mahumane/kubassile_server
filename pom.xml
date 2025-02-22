@@ -80,12 +80,21 @@
             <artifactId>forms</artifactId>
             <version>7.0.2</version>
         </dependency>
-
+<dependency>
+  <groupId>org.springframework.data</groupId>
+  <artifactId>spring-data-redis</artifactId>
+  <version>3.4.3</version>
+</dependency>
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>pdfa</artifactId>
             <version>7.0.2</version>
         </dependency>
+<dependency>
+    <groupId>org.apache.pdfbox</groupId>
+    <artifactId>pdfbox</artifactId>
+    <version>3.0.3</version> <!-- Verifique a versão mais recente -->
+</dependency>
 
         <dependency>
             <groupId>com.itextpdf</groupId>
@@ -110,7 +119,34 @@
             <artifactId>hyph</artifactId>
             <version>7.0.2</version>
         </dependency>
+    <!-- Biblioteca principal do Apache POI -->
+    <dependency>
+        <groupId>org.apache.poi</groupId>
+        <artifactId>poi</artifactId>
+        <version>5.2.3</version>  <!-- Use uma versão mais recente -->
+    </dependency>
 
+    <!-- Suporte para arquivos Office (Word, Excel, PowerPoint) -->
+    <dependency>
+        <groupId>org.apache.poi</groupId>
+        <artifactId>poi-ooxml</artifactId>
+        <version>5.2.3</version>
+    </dependency>
+
+
+    <!-- Dependência necessária para manipular arquivos OOXML -->
+    <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-collections4</artifactId>
+        <version>4.4</version>
+    </dependency>
+
+    <!-- Dependência para XML -->
+    <dependency>
+        <groupId>org.apache.xmlbeans</groupId>
+        <artifactId>xmlbeans</artifactId>
+        <version>5.1.1</version>
+    </dependency>
 
 
 		<dependency>
