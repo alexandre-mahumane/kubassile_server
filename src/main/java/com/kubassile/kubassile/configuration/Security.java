@@ -34,32 +34,41 @@ public class Security {
         @Bean
         SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 return http
-                                .csrf(csrf -> csrf.disable())
-                                .authorizeHttpRequests(authorize -> authorize
-                                                .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
-                                                .requestMatchers(HttpMethod.GET, "/api/pdf/**").permitAll()
-                                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest()
-                                                .authenticated()
-
-                                )
-
-                                .sessionManagement(session -> session
-                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                                .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
-                                .build();
+                        .cors(cors -> cors
+                                .configurationSource(request -> {
+                                        CorsConfiguration config = new CorsConfiguration();
+                                        config.setAllowCredentials(true);
+                                        config.addAllowedOrigin("http://localhost:5173");
+                                        config.addAllowedHeader("*");
+                                        config.addAllowedMethod("*");
+                                        return config;
+                                })
+                        )
+                        .csrf(csrf -> csrf.disable())
+                        .authorizeHttpRequests(authorize -> authorize
+                                .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/pdf/**").permitAll()
+                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                                .anyRequest().authenticated()
+                        )
+                        .sessionManagement(session -> session
+                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
+                        .build();
         }
 
-        @Bean
-        public CorsFilter corsFilter() {
-                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-                CorsConfiguration config = new CorsConfiguration();
-                config.setAllowCredentials(true);
-                config.addAllowedOrigin("http://localhost:5173");
-                config.addAllowedHeader("*");
-                config.addAllowedMethod("*");
-                source.registerCorsConfiguration("/**", config);
-                return new CorsFilter(source);
-        }
+
+//        @Bean
+//        public CorsFilter corsFilter() {
+//                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//                CorsConfiguration config = new CorsConfiguration();
+//                config.setAllowCredentials(true);
+//                config.addAllowedOrigin("http://localhost:5173");
+//                config.addAllowedHeader("*");
+//                config.addAllowedMethod("*");
+//                source.registerCorsConfiguration("/**", config);
+//                return new CorsFilter(source);
+//        }
 
         @Bean
         DateTimeFormatter dateTimeFormatter() {

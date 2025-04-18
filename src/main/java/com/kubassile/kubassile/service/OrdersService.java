@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.kubassile.kubassile.domain.client.Client;
@@ -33,6 +34,7 @@ public class OrdersService {
         private final PaymentService paymentService;
         private final PaymentRepository paymentRepository;
         private final DateTimeFormatter dateTimeFormatter;
+        private final DocumentsService documentsService;
 
         public List<OrderDataResponseDto> getAll(
                         LocalDateTime startDate,
@@ -77,6 +79,7 @@ public class OrdersService {
                 return dto;
         }
 
+        @Transactional
         public OrderResponseDto insert(OrderDto data) {
                 var dto = new ClientDto(data.clientName(), data.phone());
                 Client client = clientService.insert(dto);
@@ -88,12 +91,14 @@ public class OrdersService {
 
                 var saveOrder = this.odersRepository.save(order);
 
-                PaymentDto payment = new PaymentDto(
+                PaymentDto paymentDto = new PaymentDto(
                                 saveOrder,
                                 data.paymentStatusId(),
                                 data.value(),
                                 data.paymentMethodId());
-                this.paymentService.insert(payment);
+                var payment = this.paymentService.insert(paymentDto);
+
+                this.documentsService.imprimirFatura(saveOrder, payment.paymentMethodId(), payment.paymentStatusId(), payment.value());
                 return new OrderResponseDto(saveOrder.getId());
 
         }
@@ -124,6 +129,10 @@ public class OrdersService {
                                 data.value(),
                                 data.paymentMethodId());
                 this.paymentService.update(payment);
+
+                if (orderData.getOrderStatusId() == 2L && payment.paymentStatusId() == 2L){
+                        this.documentsService.imprimirFatura(orderData, payment.paymentMethodId(), payment.paymentStatusId(), payment.value());
+                }
                 return new OrderResponseDto(orderData.getId());
         }
 

@@ -28,7 +28,6 @@ public class Filter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String token = request.getHeader("Authorization");
-
         if (token != null) {
             try {
                 String subject = jwtService.decodeToken(token.replace("Bearer ", ""));
